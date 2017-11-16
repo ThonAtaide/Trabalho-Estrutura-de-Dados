@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1510867806 source:c:\users\thon_\desktop\estudo\arvoretrabalhodoramosepo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<ctype.h>
+	<string.h>
+
