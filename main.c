@@ -46,23 +46,20 @@ int main()
     struct Arvore *arvore;
     arvore = (struct Arvore*)calloc(1,sizeof(struct Arvore));
     char pessoa[30];
+
+
+
+
     AdcNo(arvore, 10);
-    AdcNo(arvore, 12);
-    AdcNo(arvore, 5);
-    AdcNo(arvore, 4);
-    AdcNo(arvore, 20);
-    AdcNo(arvore, 8);
-    AdcNo(arvore, 7);
-    AdcNo(arvore, 15);
-    AdcNo(arvore, 13);
+
     imprimeArvore(arvore->raiz);
-    AdcPessoa(arvore);
+
     fflush(stdin);
     printf("\npessoa: ");
     gets(pessoa);
     RmvPessoa(arvore, 10, pessoa);
     //AdcPessoa(arvore);
-    AdcPessoa(arvore);
+    //AdcPessoa(arvore);
     //RmvNo(arvore, buscaNo(arvore->raiz,10 ));
     printf("\n");
     imprimeArvore(arvore->raiz);
@@ -308,7 +305,11 @@ void RmvPessoa(struct Arvore *arvore, int idade, char nome[30])
     {
         if(stcmp(aux->nome, nome)==0)
         {
-            aux->anterior->prox = aux->prox;
+            if(aux == galho->head)
+                galho->head = NULL;
+            else
+                aux->anterior->prox = aux->prox;
+
             free(aux);
             return;
         }else
@@ -325,7 +326,6 @@ int stcmp(char nome[], char nome2[])
     {
         toupper(nome[i]);
         i++;
-        printf("\n %c", nome[i]);
     }
     i=0;
     while(nome2[i] != '\0')
@@ -333,6 +333,5 @@ int stcmp(char nome[], char nome2[])
         toupper(nome2[i]);
         i++;
     }
-    printf("\nsaiu");
     return (stricmp(nome, nome2)== 0)? 0: 1;
 }
