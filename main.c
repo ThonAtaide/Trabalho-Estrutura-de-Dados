@@ -37,7 +37,7 @@ struct No * buscaMenorDireita(struct No *raiz);
 void imprimeArvore(struct No *raiz);
 void RmvNo(struct Arvore *arvore, struct No *para_excluir);
 void AdcPessoa(struct Arvore *arvore);
-void RmvPessoa(struct Arvore *arvore, int idade, char nome[30]);
+void RmvPessoa(struct Arvore *arvore);
 int stcmp(char nome[], char nome2[]);
 
 int main()
@@ -45,19 +45,36 @@ int main()
     setlocale(LC_ALL,"portuguese");
     struct Arvore *arvore;
     arvore = (struct Arvore*)calloc(1,sizeof(struct Arvore));
-    char pessoa[30];
+    int loop = 0;
 
+    do{
+        printf("1-Cadastrar: ");
+        printf("2-Remover: ");
+        printf("3-Imprimir registros: ");
+        printf("4-Sair: ");
+        printf("\nEscolha: ");
+        scanf("%d", &loop);
 
-
+        switch(loop)
+        {
+            case 1: AdcPessoa(arvore); break;
+            case 2: RmvPessoa(arvore); break;
+            case 3: imprimeArvore(arvore->raiz); break;
+        }
+        system("\npause");
+       system("cls");
+    }while(loop!=4);
 
     AdcNo(arvore, 10);
-
+    AdcNo(arvore, 4);
+    AdcNo(arvore, 6);
+    AdcNo(arvore, 2);
+    AdcPessoa(arvore);
+    imprimeArvore(arvore->raiz);
+    RmvPessoa(arvore);
+   // AdcPessoa(arvore);
     imprimeArvore(arvore->raiz);
 
-    fflush(stdin);
-    printf("\npessoa: ");
-    gets(pessoa);
-    RmvPessoa(arvore, 10, pessoa);
     //AdcPessoa(arvore);
     //AdcPessoa(arvore);
     //RmvNo(arvore, buscaNo(arvore->raiz,10 ));
@@ -238,7 +255,7 @@ void imprimeArvore(struct No *raiz)
     aux = raiz->head;
     while(aux != NULL)
     {
-        printf("\nIdade: %d  Nome: %s  Altura: %f   Peso: %f", aux->idade, aux->nome, aux->altura, aux->peso);
+        printf("\nIdade: %d  Nome: %s  Altura: %.2f   Peso: %.2f", aux->idade, aux->nome, aux->altura, aux->peso);
         aux = aux->prox;
     }
     imprimeArvore(raiz->direita);
@@ -288,10 +305,18 @@ void AdcPessoa(struct Arvore *arvore)
     }
 }
 
-void RmvPessoa(struct Arvore *arvore, int idade, char nome[30])
+void RmvPessoa(struct Arvore *arvore)
 {
     struct No *galho;
     struct Pessoa *aux;
+    int idade=0;
+    char nome[30];
+
+    printf("\nIdade: ");
+    scanf("%d",&idade);
+    fflush(stdin);
+    printf("\nNome: ");
+    gets(nome);
 
     galho = buscaNo(arvore->raiz, idade);
     if(galho == NULL)
@@ -305,10 +330,14 @@ void RmvPessoa(struct Arvore *arvore, int idade, char nome[30])
     {
         if(stcmp(aux->nome, nome)==0)
         {
-            if(aux == galho->head)
+            if(aux == galho->head){
                 galho->head = NULL;
-            else
+                RmvNo(arvore, galho);
+             }
+            else{
                 aux->anterior->prox = aux->prox;
+                galho->tamanho--;
+            }
 
             free(aux);
             return;
